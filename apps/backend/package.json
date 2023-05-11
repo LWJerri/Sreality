@@ -1,0 +1,25 @@
+{
+  "name": "@sreality/backend",
+  "version": "1.0.0",
+  "main": "./dist/app.js",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "prestart": "pnpm prisma migrate deploy",
+    "start": "node --enable-source-maps ./dist/app.js",
+    "dev": "tsx watch ./src/app.ts",
+    "generate": "pnpm prisma generate"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.3",
+    "prettier": "^2.8.8",
+    "prisma": "^4.14.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@prisma/client": "4.14.0",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.17.0"
+  }
+}
