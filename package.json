@@ -1,0 +1,31 @@
+{
+  "name": "sreality",
+  "version": "1.0.0",
+  "description": "Simple web app for integrating with Sreality website.",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "backend:dev": "pnpm --filter @sreality/backend dev",
+    "backend:build": "pnpm --filter @sreality/backend build",
+    "backend:start": "pnpm --filter @sreality/backend start",
+    "backend:generate": "pnpm --filter @sreality/backend generate"
+  },
+  "engines": {
+    "node": ">= 16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LWJerri/Sreality.git"
+  },
+  "keywords": [],
+  "author": "LWJerri (lwjerri.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LWJerri/Sreality/issues"
+  },
+  "homepage": "https://github.com/LWJerri/Sreality#readme",
+  "devDependencies": {
+    "prettier": "^2.8.8"
+  }
+}
