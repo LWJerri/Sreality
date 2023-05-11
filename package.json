@@ -9,7 +9,10 @@
     "backend:dev": "pnpm --filter @sreality/backend dev",
     "backend:build": "pnpm --filter @sreality/backend build",
     "backend:start": "pnpm --filter @sreality/backend start",
-    "backend:generate": "pnpm --filter @sreality/backend generate"
+    "backend:generate": "pnpm --filter @sreality/backend generate",
+    "frontend:dev": "pnpm --filter @sreality/frontend dev",
+    "frontend:build": "pnpm --filter @sreality/frontend build",
+    "frontend:start": "pnpm --filter @sreality/frontend start"
   },
   "engines": {
     "node": ">= 16"
