@@ -1,0 +1,27 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Apartment {
+  id             String           @id @default(cuid())
+  name           String
+  ApartmentImage ApartmentImage[]
+
+  @@map("apartments")
+}
+
+model ApartmentImage {
+  id          String    @id @default(uuid())
+  photoURL    String
+  apartmentId String
+  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  @@unique([apartmentId, photoURL])
+  @@map("apartments_images")
+}
