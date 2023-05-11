@@ -7,7 +7,13 @@ export async function importData() {
   let isLastRequest = false;
   let page = 1;
 
+  const currentApartmentsCount = await prisma.apartment.count();
+
+  if (currentApartmentsCount >= 500) return;
+
   while (!isLastRequest) {
+    console.log(`Loading apartments to database... Page ${page}`);
+
     const request = await fetch(`${API_URL}?category_main_cb=1&category_type_cb=1&per_page=100&page=${page}`);
     const response: SrealityInterface = await request.json();
 
