@@ -14,35 +14,51 @@ export async function importData() {
   while (!isLastRequest) {
     console.log(`Loading apartments to database... Page ${page}`);
 
-    const request = await fetch(`${API_URL}?category_main_cb=1&category_type_cb=1&per_page=100&page=${page}`);
-    const response: SrealityInterface = await request.json();
+    let response: SrealityInterface;
 
-    const getAlreadyAddedApartments = await prisma.apartment.findMany({ select: { name: true } });
-    const getNewApartmentsList = response._embedded.estates.filter(
-      (estate) => !getAlreadyAddedApartments.some((record) => record.name === estate.name),
-    );
-
-    for (const apartment of getNewApartmentsList) {
-      const { _links: apartmentLinks, name } = apartment;
-
-      const getApartmentImagesList = apartmentLinks.images.map((img) => {
-        return { photoURL: img.href };
-      });
-
-      await prisma.apartment.create({
-        data: {
-          name,
-          ApartmentImage: { createMany: { data: getApartmentImagesList, skipDuplicates: true } },
-        },
-      });
+    try {
+      const request = await fetch(`${API_URL}?category_main_cb=1&category_type_cb=1&per_page=100&page=${page}`);
+      response = await request.json();
+    } catch (err) {
+      console.error("Can't get info from website! Error -", err);
     }
 
-    const apartmentsSizeInDatabase = await prisma.apartment.count();
+    if (!response) return;
 
-    if (apartmentsSizeInDatabase >= 500) {
-      isLastRequest = true;
-    } else {
-      page++;
+    try {
+      const getAlreadyAddedApartments = await prisma.apartment.findMany({ select: { name: true } });
+      const getNewApartmentsList = response._embedded.estates.filter(
+        (estate) => !getAlreadyAddedApartments.some((record) => record.name === estate.name),
+      );
+
+      for (const apartment of getNewApartmentsList) {
+        const { _links: apartmentLinks, name } = apartment;
+
+        const getApartmentImagesList = apartmentLinks.images.map((img) => {
+          return { photoURL: img.href };
+        });
+
+        try {
+          await prisma.apartment.create({
+            data: {
+              name,
+              ApartmentImage: { createMany: { data: getApartmentImagesList, skipDuplicates: true } },
+            },
+          });
+        } catch (err) {
+          console.error(`Can't add data from page ${page} to database! Error -`, err);
+        }
+      }
+
+      const apartmentsSizeInDatabase = await prisma.apartment.count();
+
+      if (apartmentsSizeInDatabase >= 500) {
+        isLastRequest = true;
+      } else {
+        page++;
+      }
+    } catch (err) {
+      console.error("Some error happens... Error -", err);
     }
   }
 }
