@@ -63,22 +63,24 @@ export default function Apartments() {
           </button>
         </div>
       </div>
+      {responseData?.error && <div className="text-center">Can't load data, because API return error!</div>}
 
-      {responseData?.data.map((apartment) => (
-        <div className="duration-500 hover:bg-gray-300 w-auto rounded p-2 md:m-2 shadow-2x">
-          <h2 className="font-bold text-2xl text-black">{apartment.name}</h2>
+      {!responseData?.error &&
+        responseData?.data.map((apartment) => (
+          <div className="duration-500 hover:bg-gray-300 w-auto rounded p-2 md:m-2 shadow-2x">
+            <h2 className="font-bold text-2xl text-black">{apartment.name}</h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2">
-            {apartment.ApartmentImage.map((image) => (
-              <div>
-                <a href={image.photoURL} target="_blank">
-                  <img src={image.photoURL} className="rounded hover:scale-95 duration-200" alt={image.id}></img>
-                </a>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2">
+              {apartment.ApartmentImage.map((image) => (
+                <div>
+                  <a href={image.photoURL} target="_blank">
+                    <img src={image.photoURL} className="rounded hover:scale-95 duration-200" alt={image.id}></img>
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
