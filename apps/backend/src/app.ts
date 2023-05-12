@@ -1,3 +1,4 @@
+import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import "dotenv/config";
 import Fastify, { FastifyInstance } from "fastify";
@@ -10,6 +11,8 @@ const { PORT } = process.env;
 
 export const server: FastifyInstance = Fastify({ logger: true });
 export const prisma = new PrismaClient({ log: ["error", "warn"] });
+
+server.register(cors);
 
 server.get("/apartments", async (req: ApartmentsRequestType, res) => await apartmentsRequest(req, res));
 server.get("*", async (req, res) => await anotherRequest(req, res));
