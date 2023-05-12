@@ -1,0 +1,40 @@
+version: "3.1"
+services:
+  postgres:
+    image: postgres:14.5
+    restart: "no"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: Sreality
+  adminer:
+    image: adminer
+    restart: "no"
+    depends_on:
+      - postgres
+    ports:
+      - 8079:8080
+    environment:
+      ADMINER_PLUGINS: dump-json
+      ADMINER_DESIGN: rmsoft
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: "no"
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+      - DATABASE_URL=postgresql://dev:dev@postgres:5432/Sreality?schema=public
+    depends_on:
+      - postgres
+    restart: "no"
