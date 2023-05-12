@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start --port 8080"
   },
   "dependencies": {
     "@types/node": "^20.1.3",
